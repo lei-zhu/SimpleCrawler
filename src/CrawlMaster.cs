@@ -292,11 +292,11 @@ namespace SimpleCrawler
         {
             if (this.Settings.SeedsAddress != null && this.Settings.SeedsAddress.Count > 0)
             {
-                foreach (string seed in this.Settings.SeedsAddress)
+                foreach (var seed in this.Settings.SeedsAddress)
                 {
-                    if (Regex.IsMatch(seed, WebUrlRegularExpressions, RegexOptions.IgnoreCase))
+                    if (Regex.IsMatch(seed.Key, WebUrlRegularExpressions, RegexOptions.IgnoreCase))
                     {
-                        UrlQueue.Instance.EnQueue(new UrlInfo(seed) { Depth = 1 });
+                        UrlQueue.Instance.EnQueue(new UrlInfo(seed.Key,seed.Value) { Depth = 1 });
                     }
                 }
             }
@@ -420,7 +420,7 @@ namespace SimpleCrawler
 
             var urlDictionary = new Dictionary<string, string>();
 
-            Match match = Regex.Match(html, "(?i)<a .*?href=\"([^\"]+)\"[^>]*>(.*?)</a>");
+            Match match = Regex.Match(html, "(?<=<a\\s+(?:[^>]*?\\s+)?href=\")([^ \"]*)(?=\")");
             while (match.Success)
             {
                 // 以 href 作为 key
@@ -450,9 +450,9 @@ namespace SimpleCrawler
                         }
                     }
 
-                    if (this.Settings.HrefKeywords != null && this.Settings.HrefKeywords.Count > 0)
+                    if (urlInfo.FollowLinkRules != null && urlInfo.FollowLinkRules.Count>0)
                     {
-                        if (!this.Settings.HrefKeywords.Any(href.Contains))
+                        if (!urlInfo.FollowLinkRules.Any(href.Contains))
                         {
                             canBeAdd = false;
                         }
@@ -501,7 +501,7 @@ namespace SimpleCrawler
                             continue;
                         }
 
-                        UrlQueue.Instance.EnQueue(new UrlInfo(url) { Depth = urlInfo.Depth + 1 });
+                        UrlQueue.Instance.EnQueue(new UrlInfo(url,urlInfo.FollowLinkRules) { Depth = urlInfo.Depth + 1 });
                     }
                 }
             }

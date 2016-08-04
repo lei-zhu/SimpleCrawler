@@ -61,7 +61,7 @@ namespace SimpleCrawler
             this.HrefKeywords = new List<string>();
             this.LockHost = true;
             this.RegularFilterExpressions = new List<string>();
-            this.SeedsAddress = new List<string>();
+            this.SeedsAddress = new Dictionary<string, IList<string>>();
         }
 
         #endregion
@@ -128,7 +128,7 @@ namespace SimpleCrawler
         /// <summary>
         /// Gets  the seeds address.
         /// </summary>
-        public List<string> SeedsAddress { get; private set; }
+        public Dictionary<string,IList<string>> SeedsAddress { get; private set; }
 
         /// <summary>
         /// Gets or sets the thread count.

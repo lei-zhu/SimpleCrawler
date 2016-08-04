@@ -45,7 +45,7 @@ namespace SimpleCrawler.Demo
             const string CityName = "beijing";
 
             // 设置种子地址
-            Settings.SeedsAddress.Add(string.Format("http://jobs.zhaopin.com/{0}", CityName));
+            Settings.SeedsAddress.Add("http://www.zjcyts.com/gn_pdtlist.htm");
 
             // 设置 URL 关键字
             Settings.HrefKeywords.Add(string.Format("/{0}/bj", CityName));
@@ -112,6 +112,8 @@ namespace SimpleCrawler.Demo
         /// </param>
         private static void MasterDataReceivedEvent(DataReceivedEventArgs args)
         {
+            Console.WriteLine("下载完毕:" + args.Url);
+            
             // 在此处解析页面，可以用类似于 HtmlAgilityPack（页面解析组件）的东东、也可以用正则表达式、还可以自己进行字符串分析
         }
 
